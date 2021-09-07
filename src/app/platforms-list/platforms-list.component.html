@@ -1,1 +1,11 @@
-<p>platforms-list works!</p>
+<div>
+    <h1>Platforms</h1>
+    <hr />
+    <div class="row">
+        <div *ngFor="let platform of platforms" class="col-md-5">
+            <platform-thumbnail [platform]="platform"></platform-thumbnail>
+            <!-- [event]="event" makes the event object available in the event-thumbnail component via an input parameter called event,
+            thus we are passing data from the events-list component to the event-thumbnail child component-->
+         </div>
+    </div>
+</div>

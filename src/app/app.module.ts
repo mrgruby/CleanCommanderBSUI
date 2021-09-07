@@ -9,6 +9,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { CreateCommandComponent } from './create-command/create-command.component';
 import { CreatePlatformComponent } from './create-platform/create-platform.component';
 import { RouterModule } from '@angular/router';
+import { CommandsThumbnailComponent } from './commands-thumbnail/commands-thumbnail.component';
+import { PlatformThumbnailComponent } from './platform-thumbnail/platform-thumbnail.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { RouterModule } from '@angular/router';
     CommandDetailsComponent,
     NavbarComponent,
     CreateCommandComponent,
-    CreatePlatformComponent
+    CreatePlatformComponent,
+    CommandsThumbnailComponent,
+    PlatformThumbnailComponent
   ],
   imports: [
     BrowserModule,

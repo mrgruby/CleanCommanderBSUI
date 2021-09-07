@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Platform } from '../models/Platform';
+import { CommanderService } from '../shared/services/commander.service';
 
 @Component({
   selector: 'app-platforms-list',
@@ -7,8 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PlatformsListComponent implements OnInit {
 
-  constructor() { }
+  constructor(private commandService:CommanderService) { }
 
+  platforms:Platform[];
+  
   ngOnInit(): void {
   }
 
