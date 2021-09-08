@@ -1,6 +1,7 @@
-<div [routerLink]="['/events', event.id]" class="well hoverwell thumbnail">
-    <h2>{{event?.name | uppercase}}</h2>
-    <div>Date: {{event?.date | date}}</div>
+<div [routerLink]="['/platforms', platform.promptPlatformId]" class="well hoverwell thumbnail">
+    <h2>{{platform?.promptPlatformName | uppercase}}</h2>
+    <div>There are {{platform?.commandLineList.length}} commands for this platform</div>
+    <!-- <div>Date: {{event?.date | date}}</div>
     <div [ngClass]="{green: event?.time === '8:00 am', bold: event?.time === '8:00 am'}" [ngSwitch]="event?.time">
         Time: {{event?.time}}
         <span *ngSwitchCase="'8:00 am'">(Early start)</span>
@@ -11,5 +12,5 @@
     <div *ngIf="event?.location">
         <span>Location: {{event?.location.address}}</span>
         <span class="pad-left">{{event?.location.city}}, {{event.location.country}}</span>
-    </div>
+    </div> -->
 </div>

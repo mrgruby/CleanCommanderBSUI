@@ -9,8 +9,10 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { CreateCommandComponent } from './create-command/create-command.component';
 import { CreatePlatformComponent } from './create-platform/create-platform.component';
 import { RouterModule } from '@angular/router';
-import { CommandsThumbnailComponent } from './commands-thumbnail/commands-thumbnail.component';
 import { PlatformThumbnailComponent } from './platform-thumbnail/platform-thumbnail.component';
+import { CommanderService } from './shared/services/commander.service';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -21,14 +23,17 @@ import { PlatformThumbnailComponent } from './platform-thumbnail/platform-thumbn
     NavbarComponent,
     CreateCommandComponent,
     CreatePlatformComponent,
-    CommandsThumbnailComponent,
     PlatformThumbnailComponent
+    
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  providers: [CommanderService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

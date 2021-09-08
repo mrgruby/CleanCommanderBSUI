@@ -9,7 +9,7 @@ import { Platform } from '../models/Platform';
 export class PlatformThumbnailComponent implements OnInit {
 
   constructor() { }
-  @Input()platforms:Platform[];
+  @Input()platform:Platform;
 
   ngOnInit(): void {
   }
