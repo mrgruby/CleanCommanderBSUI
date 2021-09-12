@@ -4,7 +4,6 @@ import { appRoutes } from './routes';
 import { AppComponent } from './app.component';
 import { CommandsListComponent } from './commands-list/commands-list.component';
 import { PlatformsListComponent } from './platforms-list/platforms-list.component';
-import { CommandDetailsComponent } from './command-details/command-details.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { CreateCommandComponent } from './create-command/create-command.component';
 import { CreatePlatformComponent } from './create-platform/create-platform.component';
@@ -13,17 +12,20 @@ import { PlatformThumbnailComponent } from './platform-thumbnail/platform-thumbn
 import { CommanderService } from './shared/services/commander.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PlatformDetailsComponent } from './platform-details/platform-details.component';
+import { NotFoundComponent } from './errors/not-found/not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CommandsListComponent,
     PlatformsListComponent,
-    CommandDetailsComponent,
     NavbarComponent,
     CreateCommandComponent,
     CreatePlatformComponent,
-    PlatformThumbnailComponent
+    PlatformThumbnailComponent,
+    PlatformDetailsComponent,
+    NotFoundComponent
     
   ],
   imports: [
