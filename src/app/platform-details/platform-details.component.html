@@ -1,1 +1,25 @@
-<p>platform-details works!</p>
+<div class="container">
+    <img [src]="platform?.promptPlatformImageUrl" [alt]="platform?.promptPlatformName" class="event-image">
+  
+    <div class="row">
+      <div class="col-md-11">
+        <h2>{{platform?.promptPlatformName}} </h2>
+      </div>
+    </div>
+  <hr />
+  
+  <div class="row" style="margin-bottom: 10px;">
+    <div class="col-md-2">
+      <h3 style="margin:0">Commands</h3>
+    </div>
+    
+    <div class="col-md-2">
+      <!-- <a (click)="addSession()">Create session</a> -->
+    </div>
+  </div>
+  
+  <!-- Here, the sessions are added to the SessionListComponent, using the sessions input parameter.
+  The sessions can then be used in the SessionListComponent html, and the output will be shown here in the app-session-list element -->
+  <!-- <app-session-list [eventId]="event?.id" [filterBy]="filterBy" [sortBy]="sortBy" [sessions]=event?.sessions *ngIf="!addMode"></app-session-list>
+  <app-create-session *ngIf="addMode" (addNewSession)="addNewSession($event)"
+    (cancelAddNewSession)="cancelAddNewSession()"></app-create-session> -->

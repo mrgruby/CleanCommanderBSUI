@@ -1,14 +1,14 @@
 import { Routes } from "@angular/router";
-import { CommandsListComponent } from "./commands-list/commands-list.component";
 import { NotFoundComponent } from "./errors/not-found/not-found.component";
 import { PlatformDetailsComponent } from "./platform-details/platform-details.component";
 import { PlatformsListComponent } from "./platforms-list/platforms-list.component";
-import { PlatformExistsService } from "./shared/services/routeServices/platform-exists.service";
+import { PlatformResolver } from "./shared/resolvers/platform.resolver";
+import { PlatformsListResolver } from "./shared/resolvers/platforms-list.resolver";
 
 
 export const appRoutes:Routes = [
-    {path: 'platforms', component: PlatformsListComponent},
-    {path: 'platforms/:id', component: PlatformDetailsComponent, canActivate: [PlatformExistsService]},//This uses a service as a route guard. EventRouteActivatorService returns true if the event with the given id exists.
+    {path: 'platforms', component: PlatformsListComponent, resolve:{platforms:PlatformsListResolver}},
+    {path: 'platforms/:id', component: PlatformDetailsComponent, resolve:{platform:PlatformResolver}},//This uses a service as a route guard. EventRouteActivatorService returns true if the event with the given id exists.
     {path: '404', component: NotFoundComponent},
     {path: '', redirectTo: '/platforms', pathMatch: 'full'}//Default route
 ]

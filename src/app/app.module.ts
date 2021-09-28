@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PlatformDetailsComponent } from './platform-details/platform-details.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
+import { CollapsibleWellComponent } from './commands-list/collapsible-well.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { NotFoundComponent } from './errors/not-found/not-found.component';
     CreatePlatformComponent,
     PlatformThumbnailComponent,
     PlatformDetailsComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    CollapsibleWellComponent
     
   ],
   imports: [

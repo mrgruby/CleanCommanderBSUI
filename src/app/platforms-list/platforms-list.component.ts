@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Platform } from '../models/Platform';
 import { CommanderService } from '../shared/services/commander.service';
 
@@ -9,13 +10,13 @@ import { CommanderService } from '../shared/services/commander.service';
 })
 export class PlatformsListComponent implements OnInit {
 
-  constructor(private commandService:CommanderService) { }
+  constructor(private commandService:CommanderService, private route: ActivatedRoute) { }
 
   platforms:Platform[];
 
   ngOnInit(): void {
-    this.getPlatforms().subscribe(platforms => this.platforms = platforms); //This is now done in the EventsListResolverService
-    //this.events = this.route.snapshot.data['events'];//Data for the events property is now taken from the route
+    //this.getPlatforms().subscribe(platforms => this.platforms = platforms); //This is now done in the EventsListResolverService
+    this.platforms = this.route.snapshot.data['platforms'];//Data for the events property is now taken from the route
   }
 
   getPlatforms(){
