@@ -1,1 +1,19 @@
-<p>commands-list works!</p>
+<!-- sessions comes from the sessions input parameter defined in the SessionListComponent, and they are added to it in the eventDetails component html -->
+<div class="row" *ngFor="let command of commands">
+    <div class="col-md-10">
+      <!-- The title added to the collapsible-well Component, using the title input parameter.
+  The title can then be used in the collapsible-well Component html, and the output will be shown here in the app-session-list element -->
+      <collapsible-well>
+        <div well-title>
+          {{command.howTo}}
+        </div>
+  
+        <div well-body>
+          <h6>Platform: {{command.promptPlatformName}}</h6>
+          <span>Command line: {{command.line}}</span><br />
+          <span>Comment:</span>
+          <p>{{command.comment}}</p>
+        </div>
+      </collapsible-well>
+    </div>
+  </div>
