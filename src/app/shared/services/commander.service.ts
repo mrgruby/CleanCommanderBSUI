@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Platform } from 'src/app/models/Platform';
 import { Router } from '@angular/router';
+import { Command } from 'src/app/models/Command';
 
 @Injectable({
     providedIn: 'root'
@@ -11,6 +12,7 @@ import { Router } from '@angular/router';
 export class CommanderService {
 
     readonly apiUrl = 'https://localhost:44363/api/platform/';
+    readonly commandApiUrl = 'https://localhost:44363/api/platform/{platformId}/command';
     errorMsg: string;
     constructor(private http: HttpClient, private router: Router) { }
 
@@ -26,6 +28,20 @@ export class CommanderService {
         return this.http.get<any>(this.apiUrl + platformId)
             .pipe(catchError(this.handleError<Platform>('getPlatformById')));;
     }
+
+    //Save a newly created event.
+  //Also handles updates since the API is made so that, if the posted event exists, it will be updated.
+  savePlatform(platform) {
+    let options = {headers: new HttpHeaders({'Content-Type':'application/json'})}
+    return this.http.post<Platform>(this.apiUrl, platform, options)
+    .pipe(catchError(this.handleError<Platform>('savePlatform')));
+  }
+
+  saveCommand(command) {
+    let options = {headers: new HttpHeaders({'Content-Type':'application/json'})}
+    return this.http.post<Command>(this.apiUrl + command.promptPlatformId + '/command', command, options)
+    .pipe(catchError(this.handleError<Platform>('saveCommand')));
+  }
 
 
     private handleError<T>(operation = 'operation', result?: T) {

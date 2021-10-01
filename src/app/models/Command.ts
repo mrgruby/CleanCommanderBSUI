@@ -7,5 +7,4 @@ export interface Command {
     promptPlatformName: string
     comment: string
     promptPlatformId: string
-    platform: Platform
 }

@@ -14,12 +14,14 @@
     </div>
     
     <div class="col-md-2">
-      <!-- <a (click)="addSession()">Create session</a> -->
+      <a (click)="addCommand()">Create command</a>
     </div>
   </div>
   
   <!-- Here, the sessions are added to the SessionListComponent, using the sessions input parameter.
   The sessions can then be used in the SessionListComponent html, and the output will be shown here in the app-session-list element -->
   <commands-list [commands]="platform?.commandLineList" *ngIf="!addMode"></commands-list>
+  <create-command [platformId]="platform?.promptPlatformId" [platformName]="platform?.promptPlatformName" *ngIf="addMode" (addNewCommand)="addNewCommand($event)"
+  (cancelAddNewCommand)="cancelAddNewCommand()"></create-command>
   <!-- <app-create-session *ngIf="addMode" (addNewSession)="addNewSession($event)"
     (cancelAddNewSession)="cancelAddNewSession()"></app-create-session> -->
