@@ -37,6 +37,13 @@ export class CommanderService {
     .pipe(catchError(this.handleError<Platform>('savePlatform')));
   }
 
+  //Update plaatform, including the list of commands. This is also used when creating a new command, since we are adding a new item to the platforms list of commands.
+  updatePlatform(platform) {
+    let options = {headers: new HttpHeaders({'Content-Type':'application/json'})}
+    return this.http.put<Platform>(this.apiUrl, platform, options)
+    .pipe(catchError(this.handleError<Platform>('updatePlatform')));
+  }
+
   saveCommand(command) {
     let options = {headers: new HttpHeaders({'Content-Type':'application/json'})}
     return this.http.post<Command>(this.apiUrl + command.promptPlatformId + '/command', command, options)

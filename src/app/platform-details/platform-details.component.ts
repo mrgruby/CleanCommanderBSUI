@@ -33,9 +33,10 @@ export class PlatformDetailsComponent implements OnInit {
     //const nextId = Math.max.apply(null, this.event.sessions.map(s => s.id));
     //Set the new session id to nextId plus 1 to make it unique.
     //session.id = nextId + 1;
-    this.service.saveCommand(command).subscribe();
+    this.platform.commandLineList.push(command);
+    this.service.updatePlatform(this.platform).subscribe();
     this.addMode = false;
-    //this.router.navigate(['/platforms/' + command.promptPlatformId]);
+    //this.router.navigate(['/platforms/']);
   }
 
   cancelAddNewCommand() {

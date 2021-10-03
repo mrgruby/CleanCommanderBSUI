@@ -1,4 +1,5 @@
 import { Routes } from "@angular/router";
+import { CreatePlatformComponent } from "./create-platform/create-platform.component";
 import { NotFoundComponent } from "./errors/not-found/not-found.component";
 import { PlatformDetailsComponent } from "./platform-details/platform-details.component";
 import { PlatformsListComponent } from "./platforms-list/platforms-list.component";
@@ -7,6 +8,7 @@ import { PlatformsListResolver } from "./shared/resolvers/platforms-list.resolve
 
 
 export const appRoutes:Routes = [
+    {path: 'platforms/new', component: CreatePlatformComponent},
     {path: 'platforms', component: PlatformsListComponent, resolve:{platforms:PlatformsListResolver}},
     {path: 'platforms/:id', component: PlatformDetailsComponent, resolve:{platform:PlatformResolver}},//This uses a service as a route guard. EventRouteActivatorService returns true if the event with the given id exists.
     {path: '404', component: NotFoundComponent},

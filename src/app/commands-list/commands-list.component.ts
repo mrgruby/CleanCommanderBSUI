@@ -12,5 +12,4 @@ export class CommandsListComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }
