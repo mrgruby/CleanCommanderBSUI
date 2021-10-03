@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Platform} from '../models/Platform';
+import { CommanderService } from '../shared/services/commander.service';
 
 @Component({
   selector: 'app-create-platform',
@@ -6,10 +10,38 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./create-platform.component.css']
 })
 export class CreatePlatformComponent implements OnInit {
+  newPlatformForm: FormGroup;
+  promptPlatformName: FormControl;
+  promptPlatformImageUrl: FormControl;
 
-  constructor() { }
+  constructor(private router:Router, private service:CommanderService) { }
 
+  public isDirty: boolean = true;
   ngOnInit(): void {
+    this.promptPlatformName = new FormControl('', Validators.required);
+    this.promptPlatformImageUrl = new FormControl('', Validators.required);
+
+    //Initialize the formGroup with all the formControls. This will be used in the form as [formGroup]="newSessionForm" in the template
+    this.newPlatformForm = new FormGroup({
+      promptPlatformName: this.promptPlatformName,
+      promptPlatformImageUrl: this.promptPlatformImageUrl
+    })
   }
 
+  cancel() {
+    this.router.navigate(['/platforms']);
+  }
+
+  savePlatform(formValues){
+    let platform: Platform = {
+      promptPlatformId: undefined,
+      promptPlatformName:formValues.promptPlatformName,
+      promptPlatformImageUrl:formValues.promptPlatformImageUrl,
+      commandLineList:[]
+    }
+    this.service.savePlatform(platform).subscribe(() => {
+      this.isDirty = false;
+      this.router.navigate(['/platforms'])
+    });
+  }
 }

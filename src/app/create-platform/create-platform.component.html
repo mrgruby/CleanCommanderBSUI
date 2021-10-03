@@ -1,28 +1,20 @@
-<!-- <div class="col-md-12">
-    <h3>Create command</h3>
+<div class="col-md-12">
+    <h3>Create Platform</h3>
 </div>
 <div class="col-md-6">
-    <form [formGroup]="newCommandForm" (ngSubmit)="saveCommand(newCommandForm.value)" autocomplete="off">
-        <div class="form-group" [ngClass]="{'error': howTo.invalid && howTo.dirty}">
-            <label for="howTo">How to:</label>
-            <em *ngIf="howTo.invalid && howTo.dirty">Required</em>
-            <input formControlName="howTo" id="howTo" type="text" class="form-control" placeholder="How to..." />
+    <form [formGroup]="newPlatformForm" (ngSubmit)="savePlatform(newPlatformForm.value)" autocomplete="off">
+        <div class="form-group" [ngClass]="{'error': promptPlatformName.invalid && promptPlatformName.dirty}">
+            <label for="promptPlatformName">Platform Name:</label>
+            <em *ngIf="promptPlatformName.invalid && promptPlatformName.dirty">Required</em>
+            <input formControlName="promptPlatformName" id="promptPlatformName" type="text" class="form-control" placeholder="Platform Name..." />
         </div>
-        <div class="form-group" [ngClass]="{'error': commandLine.invalid && commandLine.dirty}">
-            <label for="commandLine">Command Line:</label>
-            <em *ngIf="commandLine.invalid && commandLine.dirty">Required</em>
-            <textarea formControlName="commandLine" id="commandLine" type="text" class="form-control"
-                placeholder="Command Line..."></textarea>
+        <div class="form-group" [ngClass]="{'error': promptPlatformImageUrl.invalid && promptPlatformImageUrl.dirty}">
+            <label for="promptPlatformImageUrl">Image Url:</label>
+            <em *ngIf="promptPlatformImageUrl.invalid && promptPlatformImageUrl.dirty">Required</em>
+            <textarea formControlName="promptPlatformImageUrl" id="promptPlatformImageUrl" type="text" class="form-control"
+                placeholder="Image Url..."></textarea>
         </div>
-        <div class="form-group" [ngClass]="{'error': comment.invalid && comment.dirty}">
-            <label for="comment">Comment:</label>
-            <em *ngIf="comment.invalid && comment.dirty">Required</em>
-            <em *ngIf="comment.invalid && comment.dirty && comment?.errors.maxLength">Cannot exceed 400
-                characters</em>
-            <textarea formControlName="comment" id="comment" rows=3 class="form-control"
-                placeholder="comment..."></textarea>
-        </div>
-        <button type="submit" [disabled]="newCommandForm.invalid" class="btn btn-primary">Save</button>
+        <button type="submit" [disabled]="newPlatformForm.invalid" class="btn btn-primary">Save</button>
         <button type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
     </form>
-</div> -->
+</div>
