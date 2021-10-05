@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Platform } from '../models/Platform';
+import { Command } from '../models/Command';
 
 @Component({
   selector: 'app-navbar',
@@ -11,10 +11,10 @@ export class NavbarComponent implements OnInit {
   constructor() { }
 
   searchTerm:string="";
-  foundPlatforms:Platform[];
+  foundCommands:Command[];
   ngOnInit(): void {
   }
-  searchPlatforms(searchTerm){
+  searchCommands(searchTerm){
 
   }
 }

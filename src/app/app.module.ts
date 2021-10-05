@@ -15,6 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PlatformDetailsComponent } from './platform-details/platform-details.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { CollapsibleWellComponent } from './commands-list/collapsible-well.component';
+import { SearchModalComponent } from './search-modal/search-modal.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { CollapsibleWellComponent } from './commands-list/collapsible-well.compo
     PlatformThumbnailComponent,
     PlatformDetailsComponent,
     NotFoundComponent,
-    CollapsibleWellComponent
+    CollapsibleWellComponent,
+    SearchModalComponent
     
   ],
   imports: [

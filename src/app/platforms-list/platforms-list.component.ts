@@ -22,5 +22,4 @@ export class PlatformsListComponent implements OnInit {
   getPlatforms(){
     return this.commandService.getPlatformsList();
   }
-
 }
