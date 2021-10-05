@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { platform } from 'process';
 import { Command } from '../models/Command';
 import { Platform } from '../models/Platform';
 import { CommanderService } from '../shared/services/commander.service';
+import { Toastr, TOASTR_TOKEN } from '../shared/services/common/toastr.service';
 
 @Component({
   selector: 'app-platform-details',
@@ -13,7 +14,7 @@ import { CommanderService } from '../shared/services/commander.service';
 export class PlatformDetailsComponent implements OnInit {
   platform:Platform;
   addMode: boolean;
-  constructor(private route: ActivatedRoute, private service: CommanderService,  private router: Router) { }
+  constructor(private route: ActivatedRoute, private service: CommanderService,  private router: Router, @Inject(TOASTR_TOKEN) private toastr:Toastr) { }
 
   ngOnInit(): void {
     this.route.data.forEach((data) => {
@@ -35,6 +36,7 @@ export class PlatformDetailsComponent implements OnInit {
     //session.id = nextId + 1;
     this.platform.commandLineList.push(command);
     this.service.updatePlatform(this.platform).subscribe();
+    this.toastr.success('New command created');
     this.addMode = false;
     //this.router.navigate(['/platforms/']);
   }

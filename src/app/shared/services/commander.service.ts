@@ -50,6 +50,11 @@ export class CommanderService {
     .pipe(catchError(this.handleError<Platform>('saveCommand')));
   }
 
+  searchCommands(searchTerm:string): Observable<Command[]>{
+    return this.http.get<any>(this.apiUrl + searchTerm)
+    .pipe(catchError(this.handleError<Platform>('searchCommands')));;
+  }
+
 
     private handleError<T>(operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {

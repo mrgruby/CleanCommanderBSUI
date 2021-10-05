@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Platform} from '../models/Platform';
 import { CommanderService } from '../shared/services/commander.service';
+import { Toastr, TOASTR_TOKEN } from '../shared/services/common/toastr.service';
 
 @Component({
   selector: 'app-create-platform',
@@ -14,7 +15,7 @@ export class CreatePlatformComponent implements OnInit {
   promptPlatformName: FormControl;
   promptPlatformImageUrl: FormControl;
 
-  constructor(private router:Router, private service:CommanderService) { }
+  constructor(private router:Router, private service:CommanderService, @Inject(TOASTR_TOKEN) private toastr:Toastr) { }
 
   public isDirty: boolean = true;
   ngOnInit(): void {
@@ -40,7 +41,8 @@ export class CreatePlatformComponent implements OnInit {
       commandLineList:[]
     }
     this.service.savePlatform(platform).subscribe(() => {
-      this.isDirty = false;
+    this.toastr.success('New platform created');
+    this.isDirty = false;
       this.router.navigate(['/platforms'])
     });
   }

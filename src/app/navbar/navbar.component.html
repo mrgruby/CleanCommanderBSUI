@@ -46,3 +46,10 @@
       </div>
     </div>
   </div>
+
+  <!-- Use content projection as for the collapsible-well -->
+  <search-modal closeOnBodyClick="true" title="Found Commands" elementId="searchResults">
+    <div class="list-group">
+      <a class="list-group-item" *ngFor="let command of foundCommands" [routerLink]="['/platforms', command.promptPlatformId]">{{command.howTo}}</a>
+    </div>
+  </search-modal>

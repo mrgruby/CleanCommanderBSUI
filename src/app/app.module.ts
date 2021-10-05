@@ -16,6 +16,12 @@ import { PlatformDetailsComponent } from './platform-details/platform-details.co
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { CollapsibleWellComponent } from './commands-list/collapsible-well.component';
 import { SearchModalComponent } from './search-modal/search-modal.component';
+import { Toastr, TOASTR_TOKEN } from './shared/services/common/toastr.service';
+import { JQ_TOKEN } from './shared/services/common/jquery.service';
+import { ModalTriggerDirective } from './shared/directives/modal-trigger.directive';
+
+let toastr:Toastr = window['toastr'];
+let jQuery = window['$'];
 
 @NgModule({
   declarations: [
@@ -29,7 +35,8 @@ import { SearchModalComponent } from './search-modal/search-modal.component';
     PlatformDetailsComponent,
     NotFoundComponent,
     CollapsibleWellComponent,
-    SearchModalComponent
+    SearchModalComponent,
+    ModalTriggerDirective
     
   ],
   imports: [
@@ -39,7 +46,18 @@ import { SearchModalComponent } from './search-modal/search-modal.component';
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [CommanderService],
+  providers: [
+    CommanderService,
+    {
+      provide: TOASTR_TOKEN, 
+      useValue: toastr
+    },
+    {
+      provide: JQ_TOKEN, 
+      useValue: jQuery
+    },
+  ],
+  
   bootstrap: [AppComponent]
 })
 export class AppModule { }
