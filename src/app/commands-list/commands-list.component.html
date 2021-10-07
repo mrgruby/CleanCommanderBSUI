@@ -11,6 +11,10 @@
         <div well-body>
           <h6>Platform: {{command.promptPlatformName}}</h6><br />
           <span>Command line: {{command.line}}</span><br /><br />
+          <div #container>
+            <button ngxClipboard [cbContent]="command.line" [container]="container">Copy Command Line</button>
+          </div>
+          <br />
           <span>Comment:</span>
           <p>{{command.comment}}</p>
         </div>

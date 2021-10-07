@@ -19,6 +19,7 @@ import { SearchModalComponent } from './search-modal/search-modal.component';
 import { Toastr, TOASTR_TOKEN } from './shared/services/common/toastr.service';
 import { JQ_TOKEN } from './shared/services/common/jquery.service';
 import { ModalTriggerDirective } from './shared/directives/modal-trigger.directive';
+import { ClipboardModule } from 'ngx-clipboard';
 
 let toastr:Toastr = window['toastr'];
 let jQuery = window['$'];
@@ -44,7 +45,8 @@ let jQuery = window['$'];
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    ClipboardModule
   ],
   providers: [
     CommanderService,
