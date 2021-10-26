@@ -20,6 +20,7 @@ import { Toastr, TOASTR_TOKEN } from './shared/services/common/toastr.service';
 import { JQ_TOKEN } from './shared/services/common/jquery.service';
 import { ModalTriggerDirective } from './shared/directives/modal-trigger.directive';
 import { ClipboardModule } from 'ngx-clipboard';
+import { LoginComponent } from './authentication/login/login.component';
 
 let toastr:Toastr = window['toastr'];
 let jQuery = window['$'];
@@ -37,7 +38,8 @@ let jQuery = window['$'];
     NotFoundComponent,
     CollapsibleWellComponent,
     SearchModalComponent,
-    ModalTriggerDirective
+    ModalTriggerDirective,
+    LoginComponent
     
   ],
   imports: [
