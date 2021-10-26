@@ -30,30 +30,30 @@ export class CommanderService {
     }
 
     //Save a newly created event.
-  //Also handles updates since the API is made so that, if the posted event exists, it will be updated.
-  savePlatform(platform) {
-    let options = {headers: new HttpHeaders({'Content-Type':'application/json'})}
-    return this.http.post<Platform>(this.apiUrl, platform, options)
-    .pipe(catchError(this.handleError<Platform>('savePlatform')));
-  }
+    //Also handles updates since the API is made so that, if the posted event exists, it will be updated.
+    savePlatform(platform) {
+        let options = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
+        return this.http.post<Platform>(this.apiUrl, platform, options)
+            .pipe(catchError(this.handleError<Platform>('savePlatform')));
+    }
 
-  //Update plaatform, including the list of commands. This is also used when creating a new command, since we are adding a new item to the platforms list of commands.
-  updatePlatform(platform) {
-    let options = {headers: new HttpHeaders({'Content-Type':'application/json'})}
-    return this.http.put<Platform>(this.apiUrl, platform, options)
-    .pipe(catchError(this.handleError<Platform>('updatePlatform')));
-  }
+    //Update plaatform, including the list of commands. This is also used when creating a new command, since we are adding a new item to the platforms list of commands.
+    updatePlatform(platform) {
+        let options = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
+        return this.http.put<Platform>(this.apiUrl, platform, options)
+            .pipe(catchError(this.handleError<Platform>('updatePlatform')));
+    }
 
-  saveCommand(command) {
-    let options = {headers: new HttpHeaders({'Content-Type':'application/json'})}
-    return this.http.post<Command>(this.apiUrl + command.promptPlatformId + '/command', command, options)
-    .pipe(catchError(this.handleError<Platform>('saveCommand')));
-  }
+    saveCommand(command) {
+        let options = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
+        return this.http.post<Command>(this.apiUrl + command.promptPlatformId + '/command', command, options)
+            .pipe(catchError(this.handleError<Platform>('saveCommand')));
+    }
 
-  searchCommands(searchTerm:string): Observable<Command[]>{
-    return this.http.get<any>(this.apiUrl + searchTerm)
-    .pipe(catchError(this.handleError<Platform>('searchCommands')));;
-  }
+    searchCommands(searchTerm: string): Observable<Command[]> {
+        return this.http.get<any>(this.apiUrl + searchTerm)
+            .pipe(catchError(this.handleError<Platform>('searchCommands')));;
+    }
 
 
     private handleError<T>(operation = 'operation', result?: T) {

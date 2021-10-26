@@ -23,12 +23,12 @@
           </li>
         </ul>
         <div class="navbar-header navbar-right">
-          <!-- <ul class="nav navbar-nav">
+          <ul class="nav navbar-nav">
             <li>
               <a *ngIf="!authService.isAuthenticated()" [routerLink]="['/user/login']">Login</a>
               <a *ngIf="authService.isAuthenticated()" [routerLink]="['/user/profile']" routerLinkActive="active">Welcome {{authService.currentUser.firstName}}</a>
             </li>
-          </ul> -->
+          </ul>
         </div>
         <form id="searchForm" (ngSubmit)="searchCommands(searchTerm)" class="navbar-form navbar-right">
           <div class="form-group">
