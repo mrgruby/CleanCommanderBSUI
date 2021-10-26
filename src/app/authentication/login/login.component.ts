@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
     this.authService.loginUser(formValues.userName, formValues.password)
       .subscribe(resp => {
         const token = <any>(resp).token;
+        localStorage.setItem("jwt", token);
         if (!resp) {
           this.loginInvalid = true;//Use this to show a message to the user, if their login failed.
         }

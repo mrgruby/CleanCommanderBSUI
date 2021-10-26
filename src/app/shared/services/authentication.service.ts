@@ -8,9 +8,10 @@ import { catchError, tap } from 'rxjs/operators';
 })
 export class AuthenticationService {
 
+  readonly apiUrl = 'https://localhost:44363/api/authentication/';
   constructor(private http: HttpClient) { }
 
-  loginUser(userName: string, password: string) {
+  loginUser2(userName: string, password: string) {
     let options = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
     let loginInfo = { username: userName, password: password };
 
@@ -23,5 +24,11 @@ export class AuthenticationService {
       .pipe(catchError(err => {
         return of(false);
       }));
+  }
+
+  loginUser(userName: string, password: string) {
+    let options = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
+    let loginInfo = { username: userName, password: password };
+    return this.http.post(this.apiUrl, loginInfo, options)
   }
 }
