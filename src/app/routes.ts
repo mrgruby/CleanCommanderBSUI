@@ -9,7 +9,7 @@ import { PlatformsListResolver } from "./shared/resolvers/platforms-list.resolve
 
 
 export const appRoutes:Routes = [
-    {path: 'platforms/new', component: CreatePlatformComponent},
+    {path: 'platforms/new', component: CreatePlatformComponent, canActivate: [AuthGuard]},
     {path: 'platforms', component: PlatformsListComponent, resolve:{platforms:PlatformsListResolver}},
     {path: 'platforms/:id', component: PlatformDetailsComponent, resolve:{platform:PlatformResolver}},//This uses a service as a route guard. EventRouteActivatorService returns true if the event with the given id exists.
     {path: '404', component: NotFoundComponent},
