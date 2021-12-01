@@ -3,6 +3,7 @@ import { CreatePlatformComponent } from "./create-platform/create-platform.compo
 import { NotFoundComponent } from "./errors/not-found/not-found.component";
 import { PlatformDetailsComponent } from "./platform-details/platform-details.component";
 import { PlatformsListComponent } from "./platforms-list/platforms-list.component";
+import { AuthGuard } from "./routeGuards/authGuard";
 import { PlatformResolver } from "./shared/resolvers/platform.resolver";
 import { PlatformsListResolver } from "./shared/resolvers/platforms-list.resolver";
 
@@ -12,7 +13,12 @@ export const appRoutes:Routes = [
     {path: 'platforms', component: PlatformsListComponent, resolve:{platforms:PlatformsListResolver}},
     {path: 'platforms/:id', component: PlatformDetailsComponent, resolve:{platform:PlatformResolver}},//This uses a service as a route guard. EventRouteActivatorService returns true if the event with the given id exists.
     {path: '404', component: NotFoundComponent},
-    {path: '', redirectTo: '/platforms', pathMatch: 'full'}//Default route
+    {path: '', redirectTo: '/platforms', pathMatch: 'full'},//Default route
+    {
+        path: 'user',
+        loadChildren: ()=> import('./user/user.module').//This loads the user module with a function, when the path starts with 'user'. 
+        then(m => m.UserModule)                         //So, this module is loaded only when the user accesses the user profile, which saves loading ressources in big apps
+    }
 ]
 
 //Notes.

@@ -20,9 +20,15 @@ import { Toastr, TOASTR_TOKEN } from './shared/services/common/toastr.service';
 import { JQ_TOKEN } from './shared/services/common/jquery.service';
 import { ModalTriggerDirective } from './shared/directives/modal-trigger.directive';
 import { ClipboardModule } from 'ngx-clipboard';
+import { LoginComponent } from './user/login/login.component';
+import { JwtModule } from '@auth0/angular-jwt';
 
 let toastr:Toastr = window['toastr'];
 let jQuery = window['$'];
+
+export function tokenGetter() {
+  return localStorage.getItem("jwt");
+}
 
 @NgModule({
   declarations: [
@@ -37,7 +43,8 @@ let jQuery = window['$'];
     NotFoundComponent,
     CollapsibleWellComponent,
     SearchModalComponent,
-    ModalTriggerDirective
+    ModalTriggerDirective,
+    //LoginComponent
     
   ],
   imports: [
@@ -46,7 +53,14 @@ let jQuery = window['$'];
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
-    ClipboardModule
+    ClipboardModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ['https://localhost:44363/'],
+        disallowedRoutes:[]
+      }
+    })
   ],
   providers: [
     CommanderService,

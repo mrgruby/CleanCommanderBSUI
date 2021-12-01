@@ -9790,6 +9790,339 @@ const isArray = (() => Array.isArray || ((x) => x && typeof x.length === 'number
 
 /***/ }),
 
+/***/ "Dvla":
+/*!***************************************************************************!*\
+  !*** ./node_modules/ngx-clipboard/__ivy_ngcc__/fesm2015/ngx-clipboard.js ***!
+  \***************************************************************************/
+/*! exports provided: ClipboardDirective, ClipboardIfSupportedDirective, ClipboardModule, ClipboardService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClipboardDirective", function() { return ClipboardDirective; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClipboardIfSupportedDirective", function() { return ClipboardIfSupportedDirective; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClipboardModule", function() { return ClipboardModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClipboardService", function() { return ClipboardService; });
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "ofXK");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var ngx_window_token__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ngx-window-token */ "Qoup");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "qCKp");
+
+
+
+
+
+/**
+ * The following code is heavily copied from https://github.com/zenorocha/clipboard.js
+ */
+
+class ClipboardService {
+    constructor(document, window) {
+        this.document = document;
+        this.window = window;
+        this.copySubject = new rxjs__WEBPACK_IMPORTED_MODULE_3__["Subject"]();
+        this.copyResponse$ = this.copySubject.asObservable();
+        this.config = {};
+    }
+    configure(config) {
+        this.config = config;
+    }
+    copy(content) {
+        if (!this.isSupported || !content) {
+            return this.pushCopyResponse({ isSuccess: false, content });
+        }
+        const copyResult = this.copyFromContent(content);
+        if (copyResult) {
+            return this.pushCopyResponse({ content, isSuccess: copyResult });
+        }
+        return this.pushCopyResponse({ isSuccess: false, content });
+    }
+    get isSupported() {
+        return !!this.document.queryCommandSupported && !!this.document.queryCommandSupported('copy') && !!this.window;
+    }
+    isTargetValid(element) {
+        if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
+            if (element.hasAttribute('disabled')) {
+                throw new Error('Invalid "target" attribute. Please use "readonly" instead of "disabled" attribute');
+            }
+            return true;
+        }
+        throw new Error('Target should be input or textarea');
+    }
+    /**
+     * Attempts to copy from an input `targetElm`
+     */
+    copyFromInputElement(targetElm, isFocus = true) {
+        try {
+            this.selectTarget(targetElm);
+            const re = this.copyText();
+            this.clearSelection(isFocus ? targetElm : undefined, this.window);
+            return re && this.isCopySuccessInIE11();
+        }
+        catch (error) {
+            return false;
+        }
+    }
+    /**
+     * This is a hack for IE11 to return `true` even if copy fails.
+     */
+    isCopySuccessInIE11() {
+        const clipboardData = this.window['clipboardData'];
+        if (clipboardData && clipboardData.getData) {
+            if (!clipboardData.getData('Text')) {
+                return false;
+            }
+        }
+        return true;
+    }
+    /**
+     * Creates a fake textarea element, sets its value from `text` property,
+     * and makes a selection on it.
+     */
+    copyFromContent(content, container = this.document.body) {
+        // check if the temp textarea still belongs to the current container.
+        // In case we have multiple places using ngx-clipboard, one is in a modal using container but the other one is not.
+        if (this.tempTextArea && !container.contains(this.tempTextArea)) {
+            this.destroy(this.tempTextArea.parentElement || undefined);
+        }
+        if (!this.tempTextArea) {
+            this.tempTextArea = this.createTempTextArea(this.document, this.window);
+            try {
+                container.appendChild(this.tempTextArea);
+            }
+            catch (error) {
+                throw new Error('Container should be a Dom element');
+            }
+        }
+        this.tempTextArea.value = content;
+        const toReturn = this.copyFromInputElement(this.tempTextArea, false);
+        if (this.config.cleanUpAfterCopy) {
+            this.destroy(this.tempTextArea.parentElement || undefined);
+        }
+        return toReturn;
+    }
+    /**
+     * Remove temporary textarea if any exists.
+     */
+    destroy(container = this.document.body) {
+        if (this.tempTextArea) {
+            container.removeChild(this.tempTextArea);
+            // removeChild doesn't remove the reference from memory
+            this.tempTextArea = undefined;
+        }
+    }
+    /**
+     * Select the target html input element.
+     */
+    selectTarget(inputElement) {
+        inputElement.select();
+        inputElement.setSelectionRange(0, inputElement.value.length);
+        return inputElement.value.length;
+    }
+    copyText() {
+        return this.document.execCommand('copy');
+    }
+    /**
+     * Moves focus away from `target` and back to the trigger, removes current selection.
+     */
+    clearSelection(inputElement, window) {
+        var _a;
+        inputElement && inputElement.focus();
+        (_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.removeAllRanges();
+    }
+    /**
+     * Creates a fake textarea for copy command.
+     */
+    createTempTextArea(doc, window) {
+        const isRTL = doc.documentElement.getAttribute('dir') === 'rtl';
+        let ta;
+        ta = doc.createElement('textarea');
+        // Prevent zooming on iOS
+        ta.style.fontSize = '12pt';
+        // Reset box model
+        ta.style.border = '0';
+        ta.style.padding = '0';
+        ta.style.margin = '0';
+        // Move element out of screen horizontally
+        ta.style.position = 'absolute';
+        ta.style[isRTL ? 'right' : 'left'] = '-9999px';
+        // Move element to the same position vertically
+        const yPosition = window.pageYOffset || doc.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px';
+        ta.setAttribute('readonly', '');
+        return ta;
+    }
+    /**
+     * Pushes copy operation response to copySubject, to provide global access
+     * to the response.
+     */
+    pushCopyResponse(response) {
+        this.copySubject.next(response);
+    }
+    /**
+     * @deprecated use pushCopyResponse instead.
+     */
+    pushCopyReponse(response) {
+        this.pushCopyResponse(response);
+    }
+}
+ClipboardService.ɵfac = function ClipboardService_Factory(t) { return new (t || ClipboardService)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵinject"](_angular_common__WEBPACK_IMPORTED_MODULE_0__["DOCUMENT"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵinject"](ngx_window_token__WEBPACK_IMPORTED_MODULE_2__["WINDOW"], 8)); };
+ClipboardService.ɵprov = Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjectable"])({ factory: function ClipboardService_Factory() { return new ClipboardService(Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵinject"])(_angular_common__WEBPACK_IMPORTED_MODULE_0__["DOCUMENT"]), Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵinject"])(ngx_window_token__WEBPACK_IMPORTED_MODULE_2__["WINDOW"], 8)); }, token: ClipboardService, providedIn: "root" });
+ClipboardService.ctorParameters = () => [
+    { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"], args: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["DOCUMENT"],] }] },
+    { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"], args: [ngx_window_token__WEBPACK_IMPORTED_MODULE_2__["WINDOW"],] }] }
+];
+(function () { (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](ClipboardService, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"],
+        args: [{ providedIn: 'root' }]
+    }], function () { return [{ type: undefined, decorators: [{
+                type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"],
+                args: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["DOCUMENT"]]
+            }] }, { type: undefined, decorators: [{
+                type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"]
+            }, {
+                type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"],
+                args: [ngx_window_token__WEBPACK_IMPORTED_MODULE_2__["WINDOW"]]
+            }] }]; }, null); })();
+
+class ClipboardDirective {
+    constructor(clipboardSrv) {
+        this.clipboardSrv = clipboardSrv;
+        this.cbOnSuccess = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        this.cbOnError = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+    }
+    // tslint:disable-next-line:no-empty
+    ngOnInit() { }
+    ngOnDestroy() {
+        this.clipboardSrv.destroy(this.container);
+    }
+    onClick(event) {
+        if (!this.clipboardSrv.isSupported) {
+            this.handleResult(false, undefined, event);
+        }
+        else if (this.targetElm && this.clipboardSrv.isTargetValid(this.targetElm)) {
+            this.handleResult(this.clipboardSrv.copyFromInputElement(this.targetElm), this.targetElm.value, event);
+        }
+        else if (this.cbContent) {
+            this.handleResult(this.clipboardSrv.copyFromContent(this.cbContent, this.container), this.cbContent, event);
+        }
+    }
+    /**
+     * Fires an event based on the copy operation result.
+     * @param succeeded
+     */
+    handleResult(succeeded, copiedContent, event) {
+        let response = {
+            isSuccess: succeeded,
+            event
+        };
+        if (succeeded) {
+            response = Object.assign(response, {
+                content: copiedContent,
+                successMessage: this.cbSuccessMsg
+            });
+            this.cbOnSuccess.emit(response);
+        }
+        else {
+            this.cbOnError.emit(response);
+        }
+        this.clipboardSrv.pushCopyResponse(response);
+    }
+}
+ClipboardDirective.ɵfac = function ClipboardDirective_Factory(t) { return new (t || ClipboardDirective)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](ClipboardService)); };
+ClipboardDirective.ɵdir = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineDirective"]({ type: ClipboardDirective, selectors: [["", "ngxClipboard", ""]], hostBindings: function ClipboardDirective_HostBindings(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("click", function ClipboardDirective_click_HostBindingHandler($event) { return ctx.onClick($event.target); });
+    } }, inputs: { targetElm: ["ngxClipboard", "targetElm"], container: "container", cbContent: "cbContent", cbSuccessMsg: "cbSuccessMsg" }, outputs: { cbOnSuccess: "cbOnSuccess", cbOnError: "cbOnError" } });
+ClipboardDirective.ctorParameters = () => [
+    { type: ClipboardService }
+];
+ClipboardDirective.propDecorators = {
+    targetElm: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"], args: ['ngxClipboard',] }],
+    container: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] }],
+    cbContent: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] }],
+    cbSuccessMsg: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] }],
+    cbOnSuccess: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"] }],
+    cbOnError: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"] }],
+    onClick: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"], args: ['click', ['$event.target'],] }]
+};
+(function () { (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](ClipboardDirective, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Directive"],
+        args: [{
+                selector: '[ngxClipboard]'
+            }]
+    }], function () { return [{ type: ClipboardService }]; }, { cbOnSuccess: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"]
+        }], cbOnError: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"]
+        }], onClick: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"],
+            args: ['click', ['$event.target']]
+        }], targetElm: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"],
+            args: ['ngxClipboard']
+        }], container: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"]
+        }], cbContent: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"]
+        }], cbSuccessMsg: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"]
+        }] }); })();
+
+class ClipboardIfSupportedDirective {
+    constructor(_clipboardService, _viewContainerRef, _templateRef) {
+        this._clipboardService = _clipboardService;
+        this._viewContainerRef = _viewContainerRef;
+        this._templateRef = _templateRef;
+    }
+    ngOnInit() {
+        if (this._clipboardService.isSupported) {
+            this._viewContainerRef.createEmbeddedView(this._templateRef);
+        }
+    }
+}
+ClipboardIfSupportedDirective.ɵfac = function ClipboardIfSupportedDirective_Factory(t) { return new (t || ClipboardIfSupportedDirective)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](ClipboardService), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewContainerRef"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_1__["TemplateRef"])); };
+ClipboardIfSupportedDirective.ɵdir = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineDirective"]({ type: ClipboardIfSupportedDirective, selectors: [["", "ngxClipboardIfSupported", ""]] });
+ClipboardIfSupportedDirective.ctorParameters = () => [
+    { type: ClipboardService },
+    { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewContainerRef"] },
+    { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["TemplateRef"] }
+];
+(function () { (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](ClipboardIfSupportedDirective, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Directive"],
+        args: [{
+                selector: '[ngxClipboardIfSupported]'
+            }]
+    }], function () { return [{ type: ClipboardService }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewContainerRef"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["TemplateRef"] }]; }, null); })();
+
+class ClipboardModule {
+}
+ClipboardModule.ɵfac = function ClipboardModule_Factory(t) { return new (t || ClipboardModule)(); };
+ClipboardModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineNgModule"]({ type: ClipboardModule });
+ClipboardModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector"]({ imports: [[_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"]]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵsetNgModuleScope"](ClipboardModule, { declarations: function () { return [ClipboardDirective, ClipboardIfSupportedDirective]; }, imports: function () { return [_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"]]; }, exports: function () { return [ClipboardDirective, ClipboardIfSupportedDirective]; } }); })();
+(function () { (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](ClipboardModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"],
+        args: [{
+                imports: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"]],
+                declarations: [ClipboardDirective, ClipboardIfSupportedDirective],
+                exports: [ClipboardDirective, ClipboardIfSupportedDirective]
+            }]
+    }], null, null); })();
+
+/*
+ * Public API Surface of ngx-clipboard
+ */
+
+/**
+ * Generated bundle index. Do not edit.
+ */
+
+
+
+//# sourceMappingURL=ngx-clipboard.js.map
+
+/***/ }),
+
 /***/ "EQ5u":
 /*!*********************************************************************************!*\
   !*** ./node_modules/rxjs/_esm2015/internal/observable/ConnectableObservable.js ***!
@@ -12319,6 +12652,37 @@ function using(resourceFactory, observableFactory) {
     });
 }
 //# sourceMappingURL=using.js.map
+
+/***/ }),
+
+/***/ "Qoup":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/ngx-window-token/__ivy_ngcc__/fesm2015/ngx-window-token.js ***!
+  \*********************************************************************************/
+/*! exports provided: WINDOW */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WINDOW", function() { return WINDOW; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+
+
+const WINDOW = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["InjectionToken"]('WindowToken', typeof window !== 'undefined' && window.document
+    ? { providedIn: 'root', factory: () => window }
+    : { providedIn: 'root', factory: () => undefined });
+
+/*
+ * Public API Surface of ngx-window-token
+ */
+
+/**
+ * Generated bundle index. Do not edit.
+ */
+
+
+
+//# sourceMappingURL=ngx-window-token.js.map
 
 /***/ }),
 

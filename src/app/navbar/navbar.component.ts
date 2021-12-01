@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Command } from '../models/Command';
+import { AuthService } from '../shared/services/auth.service';
 import { CommanderService } from '../shared/services/commander.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { CommanderService } from '../shared/services/commander.service';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private service:CommanderService) { }
+  constructor(public authService: AuthService, private service:CommanderService) { }
 
   searchTerm:string="";
   foundCommands:Command[];
