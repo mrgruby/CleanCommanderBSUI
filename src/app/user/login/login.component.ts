@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
         }
         else {
           const token = (<any>resp).token;
-          localStorage.setItem("jwt", token);
+          localStorage.setItem("token", token);
           this.router.navigate(['platforms']);
         }
       });

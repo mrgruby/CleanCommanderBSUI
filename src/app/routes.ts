@@ -6,10 +6,11 @@ import { PlatformsListComponent } from "./platforms-list/platforms-list.componen
 import { AuthGuard } from "./routeGuards/authGuard";
 import { PlatformResolver } from "./shared/resolvers/platform.resolver";
 import { PlatformsListResolver } from "./shared/resolvers/platforms-list.resolver";
+import { AuthGuardService } from "./shared/services/routeServices/auth-guard.service";
 
 
 export const appRoutes:Routes = [
-    {path: 'platforms/new', component: CreatePlatformComponent, canActivate: [AuthGuard]},
+    {path: 'platforms/new', component: CreatePlatformComponent, canActivate: [AuthGuardService]},
     {path: 'platforms', component: PlatformsListComponent, resolve:{platforms:PlatformsListResolver}},
     {path: 'platforms/:id', component: PlatformDetailsComponent, resolve:{platform:PlatformResolver}},//This uses a service as a route guard. EventRouteActivatorService returns true if the event with the given id exists.
     {path: '404', component: NotFoundComponent},

@@ -1,7 +1,8 @@
-export interface IUser {
+export class IUser {
     id: string
     userName: string
-    email: string
+    userStatus: string
+    email:string
     token: string
     refreshToken: string
 }
