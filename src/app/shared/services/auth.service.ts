@@ -24,9 +24,8 @@ export class AuthService {
       .pipe(tap(data => {
         var tempUser = new IUser;
         tempUser.userName = data['userName'];
-        this.currentUser = tempUser;//data['user'] is what is returned from the server.
+        this.currentUser = tempUser;
         localStorage.setItem("userName", this.currentUser.userName);
-        // localStorage.setItem("token", data['Token']);
       }))
       .pipe(catchError(err => {
         return of(false);
@@ -42,7 +41,6 @@ export class AuthService {
   }
 
   checkAuthenticationStatus() {
-    //Send the token to he server to check if it is still valid.
     const token: string = localStorage.getItem("token");
     if (token && !this.jwtHelper.isTokenExpired(token)) {
       var tempUser = new IUser;
@@ -54,12 +52,6 @@ export class AuthService {
     }
     //This could also be done in a subscribe. Using tap() instead, gives the user the option to subscribe to the returned data where
     //checkAuthenticationStatus is called, and use it for something there. 
-    // this.http.get('/api/currentIdentity')
-    //   .pipe(tap(data => {
-    //     if (data instanceof Object) {
-    //       this.currentUser = <User>data;
-    //     }
-    //   })).subscribe();
-      //We could also write .subscribe(); here, remove the return, and then write .subscribe(); over in app.component like, this.auth.checkAuthenticationStatus().subscribe();
+    //We could also write .subscribe(); here, remove the return, and then write .subscribe(); over in app.component like, this.auth.checkAuthenticationStatus().subscribe();
   }
 }

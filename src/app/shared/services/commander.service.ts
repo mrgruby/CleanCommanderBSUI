@@ -32,8 +32,11 @@ export class CommanderService {
     //Save a newly created event.
     //Also handles updates since the API is made so that, if the posted event exists, it will be updated.
     savePlatform(platform) {
+        let httpOptions = new HttpHeaders()
+        .set('Authorization', 'Bearer ' + localStorage.getItem("token")).set('Content-Type', 'application/json');
+
         let options = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
-        return this.http.post<Platform>(this.apiUrl, platform, options)
+        return this.http.post<Platform>(this.apiUrl, platform,  { headers: httpOptions })
             .pipe(catchError(this.handleError<Platform>('savePlatform')));
     }
 
@@ -45,8 +48,11 @@ export class CommanderService {
     }
 
     saveCommand(command) {
-        let options = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
-        return this.http.post<Command>(this.apiUrl + command.promptPlatformId + '/command', command, options)
+        let httpOptions = new HttpHeaders()
+        .set('Authorization', 'Bearer ' + localStorage.getItem("token")).set('Content-Type', 'application/json');
+
+        let options = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") }) }
+        return this.http.post<Command>(this.apiUrl + command.promptPlatformId + '/command', command, { headers: httpOptions })
             .pipe(catchError(this.handleError<Platform>('saveCommand')));
     }
 

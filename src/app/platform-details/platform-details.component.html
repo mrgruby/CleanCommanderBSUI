@@ -13,7 +13,7 @@
     </div>
     
     <div class="col-md-2">
-      <a (click)="addCommand()">Create command</a>
+      <a *ngIf="authService.isAuthenticated()" (click)="addCommand()">Create command</a>
     </div>
   </div>
   

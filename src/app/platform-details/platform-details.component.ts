@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { platform } from 'process';
 import { Command } from '../models/Command';
 import { Platform } from '../models/Platform';
+import { AuthService } from '../shared/services/auth.service';
 import { CommanderService } from '../shared/services/commander.service';
 import { Toastr, TOASTR_TOKEN } from '../shared/services/common/toastr.service';
 
@@ -14,7 +15,7 @@ import { Toastr, TOASTR_TOKEN } from '../shared/services/common/toastr.service';
 export class PlatformDetailsComponent implements OnInit {
   platform:Platform;
   addMode: boolean;
-  constructor(private route: ActivatedRoute, private service: CommanderService,  private router: Router, @Inject(TOASTR_TOKEN) private toastr:Toastr) { }
+  constructor(private route: ActivatedRoute, private service: CommanderService,  private router: Router, @Inject(TOASTR_TOKEN) private toastr:Toastr, public authService: AuthService) { }
 
   ngOnInit(): void {
     this.route.data.forEach((data) => {
