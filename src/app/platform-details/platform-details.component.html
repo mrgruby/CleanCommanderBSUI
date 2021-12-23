@@ -1,26 +1,29 @@
-<div class="container">  
-    <div class="row">
-      <div class="col-md-11">
-        <h2>{{platform?.promptPlatformName}} </h2>
-      </div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-11">
+      <h2>{{platform?.promptPlatformName}} </h2>
     </div>
-    <img [src]="platform?.promptPlatformImageUrl" [alt]="platform?.promptPlatformName" class="event-image">
-    <hr />
-  
+  </div>
+  <img [src]="platform?.promptPlatformImageUrl" [alt]="platform?.promptPlatformName" class="event-image">
+  <hr />
+
   <div class="row" style="margin-bottom: 10px;">
     <div class="col-md-2">
       <h3 style="margin:0">Commands</h3>
     </div>
-    
+
     <div class="col-md-2">
       <a *ngIf="authService.isAuthenticated()" (click)="addCommand()">Create command</a>
+      <button *ngIf="authService.isAuthenticated()" type=button class="btn btn-primary"
+        (click)="deletePlatform(platform)">Delete This Platform</button>
     </div>
   </div>
-  
+
   <!-- Here, the sessions are added to the SessionListComponent, using the sessions input parameter.
   The sessions can then be used in the SessionListComponent html, and the output will be shown here in the app-session-list element -->
   <commands-list [commands]="platform?.commandLineList" *ngIf="!addMode"></commands-list>
-  <create-command [platformId]="platform?.promptPlatformId" [platformName]="platform?.promptPlatformName" *ngIf="addMode" (addNewCommand)="addNewCommand($event)"
-  (cancelAddNewCommand)="cancelAddNewCommand()"></create-command>
+  <create-command [platformId]="platform?.promptPlatformId" [platformName]="platform?.promptPlatformName"
+    *ngIf="addMode" (addNewCommand)="addNewCommand($event)" (cancelAddNewCommand)="cancelAddNewCommand()">
+  </create-command>
   <!-- <app-create-session *ngIf="addMode" (addNewSession)="addNewSession($event)"
     (cancelAddNewSession)="cancelAddNewSession()"></app-create-session> -->

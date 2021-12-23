@@ -1,6 +1,6 @@
 <div [routerLink]="['/platforms', platform.promptPlatformId]" class="well hoverwell thumbnail">
     <h2>{{platform?.promptPlatformName | uppercase}}</h2>
-    <div>There are {{platform?.commandLineList.length}} commands for this platform</div>
+    <div>{{text1}} {{platform?.commandLineList.length}} {{text2}} for this platform</div>
     <!-- <div>Date: {{event?.date | date}}</div>
     <div [ngClass]="{green: event?.time === '8:00 am', bold: event?.time === '8:00 am'}" [ngSwitch]="event?.time">
         Time: {{event?.time}}

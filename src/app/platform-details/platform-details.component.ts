@@ -13,9 +13,9 @@ import { Toastr, TOASTR_TOKEN } from '../shared/services/common/toastr.service';
   styleUrls: ['./platform-details.component.css']
 })
 export class PlatformDetailsComponent implements OnInit {
-  platform:Platform;
+  platform: Platform;
   addMode: boolean;
-  constructor(private route: ActivatedRoute, private service: CommanderService,  private router: Router, @Inject(TOASTR_TOKEN) private toastr:Toastr, public authService: AuthService) { }
+  constructor(private route: ActivatedRoute, private service: CommanderService, private router: Router, @Inject(TOASTR_TOKEN) private toastr: Toastr, public authService: AuthService) { }
 
   ngOnInit(): void {
     this.route.data.forEach((data) => {
@@ -40,6 +40,19 @@ export class PlatformDetailsComponent implements OnInit {
     this.toastr.success('New command created');
     this.addMode = false;
     //this.router.navigate(['/platforms/']);
+  }
+
+  deletePlatform(platform: Platform) {
+    if (confirm("Are you sure to delete " + platform.promptPlatformName)) {
+      //Remove the command from the current platforms list, so that it is removed from the list on the page right away.
+      // this.platform.commandLineList.forEach((value, index) => {
+      //   if (value.commandLineId == command.commandLineId) this.platform.commandLineList.splice(index, 1);
+      //   //Then delete it from the server.
+      // });
+      this.service.deletePlatform(platform);
+      this.toastr.success('Platform deleted!');
+      this.router.navigate(['/platforms']);
+    }
   }
 
   cancelAddNewCommand() {

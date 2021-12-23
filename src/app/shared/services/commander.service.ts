@@ -26,7 +26,7 @@ export class CommanderService {
     //https://localhost:44363/api/platform/{platformId}
     getPlatformById(platformId: string): Observable<Platform> {
         return this.http.get<any>(this.apiUrl + platformId)
-            .pipe(catchError(this.handleError<Platform>('getPlatformById')));;
+            .pipe(catchError(this.handleError<Platform>('getPlatformById')));
     }
 
     //Save a newly created event.
@@ -42,8 +42,11 @@ export class CommanderService {
 
     //Update plaatform, including the list of commands. This is also used when creating a new command, since we are adding a new item to the platforms list of commands.
     updatePlatform(platform) {
+        let httpOptions = new HttpHeaders()
+        .set('Authorization', 'Bearer ' + localStorage.getItem("token")).set('Content-Type', 'application/json');
+
         let options = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
-        return this.http.put<Platform>(this.apiUrl, platform, options)
+        return this.http.put<Platform>(this.apiUrl, platform, { headers: httpOptions })
             .pipe(catchError(this.handleError<Platform>('updatePlatform')));
     }
 
@@ -61,13 +64,32 @@ export class CommanderService {
             .pipe(catchError(this.handleError<Platform>('searchCommands')));;
     }
 
+     //https://localhost:44363/api/platform/6313179F-7837-473A-A4D5-A5571B43E6A6/command/adc42c09-08c1-4d2c-9f96-2d15bb1af299
+    deleteCommand(command) {
+        let httpOptions = new HttpHeaders()
+        .set('Authorization', 'Bearer ' + localStorage.getItem("token")).set('Content-Type', 'application/json');
+        var url = this.apiUrl + command.promptPlatformId + '/command/' + command.commandLineId;
+        let options = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") }) }
+        return this.http.delete(this.apiUrl + command.promptPlatformId + '/command/' + command.commandLineId, { headers: httpOptions })
+            .pipe(catchError(this.handleError('deleteCommand'))).subscribe();
+    }
+
+    deletePlatform(platform) {
+        let httpOptions = new HttpHeaders()
+        .set('Authorization', 'Bearer ' + localStorage.getItem("token")).set('Content-Type', 'application/json');
+        var url = this.apiUrl + platform.promptPlatformId;
+        let options = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") }) }
+        return this.http.delete(this.apiUrl + platform.promptPlatformId, { headers: httpOptions })
+            .pipe(catchError(this.handleError('deletePlatform'))).subscribe();
+    }
+
 
     private handleError<T>(operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
             if (error.status == 404) {
                 this.router.navigate(['/404']);
             }
-            //console.error(error);
+            console.error(error);
             return of(result as T);
         }
     }

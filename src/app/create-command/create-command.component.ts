@@ -48,8 +48,8 @@ export class CreateCommandComponent implements OnInit {
       promptPlatformId: this.platformId
     }
 
-    //The create-session component is used as a child component in the event-details component. So when a new session is added here, this event is fired, and it can
-    //then be handled in the component that uses it.
+    //The create-command component is used as a child component in the platform-details component. So when a new command is added here, this event is fired, and it can
+    //then be handled in the platform-details component addNewCommand function.
     this.addNewCommand.emit(command);
   }
 
