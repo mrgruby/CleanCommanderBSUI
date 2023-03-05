@@ -7,8 +7,9 @@ import { catchError, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthenticationService {
-
-  readonly apiUrl = 'https://localhost:44363/api/authentication/';
+//https://cleancommanderapi.azurewebsites.net
+  readonly apiUrl = 'https://cleancommanderapi.azurewebsites.net/api/authentication/';
+  //readonly apiUrl = 'https://localhost:44363/api/authentication/';
   constructor(private http: HttpClient) { }
 
   loginUser2(userName: string, password: string) {

@@ -10,9 +10,11 @@ import { Command } from 'src/app/models/Command';
     providedIn: 'root'
 })
 export class CommanderService {
-
-    readonly apiUrl = 'https://localhost:44363/api/platform/';
-    readonly commandApiUrl = 'https://localhost:44363/api/platform/{platformId}/command';
+//https://cleancommanderapi.azurewebsites.net
+    readonly apiUrl = 'https://cleancommanderapi.azurewebsites.net/api/platform/';
+    //readonly apiUrl = 'https://localhost:44363/api/platform/';
+    readonly commandApiUrl = 'https://cleancommanderapi.azurewebsites.net/api/platform/{platformId}/command';
+    //readonly commandApiUrl = 'https://localhost:44363/api/platform/{platformId}/command';
     errorMsg: string;
     constructor(private http: HttpClient, private router: Router) { }
 

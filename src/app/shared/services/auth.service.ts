@@ -10,7 +10,8 @@ import { IUser } from 'src/app/models/User';
 })
 export class AuthService {
   currentUser: IUser;
-  readonly apiUrl = 'https://localhost:44363/api/authentication/';
+  readonly apiUrl = 'https://cleancommanderapi.azurewebsites.net/api/authentication/';
+  //readonly apiUrl = 'https://localhost:44363/api/authentication/';
 
   constructor(private jwtHelper: JwtHelperService, private http: HttpClient) { }
 
