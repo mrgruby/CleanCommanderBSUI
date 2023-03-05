@@ -4,36 +4,46 @@
 # https://aka.ms/yaml
 
 trigger:
-- main
+- master
 
 pool:
-  name: Azure Pipelines
+  vmImage: Ubuntu-latest
   demands: npm
 
 steps:
-- task: Npm@1
-  displayName: 'npm install'
-  inputs:
-    verbose: false
+  - task: Npm@0
+    displayName: 'npm install'
+    inputs:
+      arguments: '--force'
 
-- task: Npm@1
-  displayName: 'npm build'
-  inputs:
-    command: custom
-    verbose: false
-    customCommand: 'run build:apps'
+  - task: Npm@1
+    displayName: 'npm install angular cli'
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'install @angular/cli'
 
-- task: CopyFiles@2
-  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
-  inputs:
-    SourceFolder: '$(Build.SourcesDirectory)/dist'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+  - task: Npm@1
+    displayName: 'npm build'
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'run build-prod'
 
-- task: ArchiveFiles@2
-  displayName: 'Archive $(Build.ArtifactStagingDirectory)'
-  inputs:
-    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
-    includeRootFolder: false
+  - task: ArchiveFiles@1
+    displayName: 'Archive files '
+    inputs:
+      rootFolder: '$(System.DefaultWorkingDirectory)/dist/CleanCommanderBSUI' #name of your project on angular.json .defaultProject value
+      includeRootFolder: false
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
+  - task: CopyFiles@2
+    displayName: 'Copy File to: $(TargetFolder)'
+    inputs:
+      SourceFolder: '$(Build.ArtifactStagingDirectory)'
+      Contents: '$(Build.BuildId).zip'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)\ArtifactsToBePublished'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: drop'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\ArtifactsToBePublished'
